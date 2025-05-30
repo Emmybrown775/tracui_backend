@@ -6,9 +6,9 @@ import enum
 
 
 class AccountType(enum.Enum):
-    SUPPLIER = "SUPPLIER"
-    RETAILER = "RETAILER"
-    CONSUMER = "CONSUMER"
+    SUPPLIER = "seller"
+    RETAILER = "logistics"
+    CONSUMER = "consumer"
 
 def enum_validator(enum_class):
     def _validate(form, field):
