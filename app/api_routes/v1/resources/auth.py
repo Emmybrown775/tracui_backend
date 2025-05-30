@@ -1,0 +1,70 @@
+from flask_jwt_extended import create_access_token
+from flask_restx import Namespace, Resource
+from flask import request
+
+from app.api_routes.v1.schema.docs import signup_model
+from app.api_routes.v1.schema.forms import SignUpForm
+from app.models import User
+from app.extensions import db
+
+
+auth_ns = Namespace("auth", description="Authentication Endpoints")
+
+@auth_ns.route("/")
+class Auth(Resource):
+    @auth_ns.expect(signup_model)
+    def post(self):
+        request_json = request.get_json()
+        access_token = request_json["access_token"]
+        form =  SignUpForm(data=request_json)
+
+        if not form.validate():
+            print(form.errors)
+            for error in form.errors:
+                return {"error": f"{error}:  {form.errors[error][0]}"}, 400
+
+        user = User.query.filter_by(access_token=access_token).first()
+
+        try:
+
+            if user:
+                token = create_access_token(user.email)
+                return {
+                    "msg": "user signed in",
+                    "data": {"user": {"email": user.email} },
+                    "token": token,
+                }, 200
+
+            else:
+                new_user =  User(
+                    access_token=access_token,
+                    email=request_json["email"],
+                    address=request_json["address"],
+                    account_type=request_json["account_type"]
+                )
+
+                db.session.add(new_user)
+                db.session.commit()
+
+                token = create_access_token(new_user.email)
+                return {
+                    "msg": "user signed in",
+                    "data": {"user":{
+                        "email": new_user.email
+                    }},
+                    "token": token,
+                }, 201
+
+        except Exception as e:
+            return {"error": str(e)}, 500
+
+
+
+
+
+
+
+
+
+
+
