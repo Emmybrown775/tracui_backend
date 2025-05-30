@@ -2,7 +2,7 @@ from flask_jwt_extended import create_access_token
 from flask_restx import Namespace, Resource
 from flask import request
 
-from app.api_routes.v1.schema.docs import signup_model
+from app.api_routes.v1.schema.docs import signup_model, check_model
 from app.api_routes.v1.schema.forms import SignUpForm
 from app.models import User
 from app.extensions import db
@@ -57,6 +57,27 @@ class Auth(Resource):
 
         except Exception as e:
             return {"error": str(e)}, 500
+
+@auth_ns.route("/check")
+class Check(Resource):
+    @auth_ns.expect(check_model)
+    def post(self):
+
+        email = request.get_json()["email"]
+
+        user = User.query.filter_by(email=email).first()
+
+        if user:
+            return {
+                "result": True
+            }, 200
+        else:
+            return {
+                "result": False
+            }
+
+
+
 
 
 

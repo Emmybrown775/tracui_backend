@@ -11,5 +11,9 @@ signup_model = api.model('SignUp', {
     'account_type': fields.String(required=True, description='The user\'s gender'),
 })
 
+check_model = api.model("Check", {
+    "email": fields.String(required=True, description="The user's email")
+})
+
 
 
