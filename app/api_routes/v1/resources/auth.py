@@ -28,7 +28,7 @@ class Auth(Resource):
         try:
 
             if user:
-                token = create_access_token(user.email)
+                token = create_access_token(user.email, additional_claims={"account_type": user.account_type})
                 return {
                     "msg": "user signed in",
                     "data": {"user": {"email": user.email} },
@@ -40,13 +40,15 @@ class Auth(Resource):
                     access_token=access_token,
                     email=request_json["email"],
                     address=request_json["address"],
-                    account_type=request_json["account_type"]
+                    account_type=request_json["account_type"],
+                    private_key=request_json["private_key"],
+
                 )
 
                 db.session.add(new_user)
                 db.session.commit()
 
-                token = create_access_token(new_user.email)
+                token = create_access_token(new_user.email, additional_claims={"account_type": new_user.account_type})
                 return {
                     "msg": "user signed in",
                     "data": {"user":{

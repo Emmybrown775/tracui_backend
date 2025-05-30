@@ -22,4 +22,5 @@ class SignUpForm (FlaskForm):
     access_secret = StringField("Last Name", validators=[])
     email = EmailField("Email", validators=[DataRequired(), Email()])
     account_type = StringField("Gender", validators=[DataRequired(), enum_validator(AccountType)])
+    private_key = StringField("PrivateKey", validators=[DataRequired()])
     address = StringField("Last Name", validators=[DataRequired()])

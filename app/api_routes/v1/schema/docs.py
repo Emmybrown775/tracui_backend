@@ -9,6 +9,7 @@ signup_model = api.model('SignUp', {
     'email': fields.String(required=True, description='The user\'s password'),
     'address': fields.String(required=True, description='The user\'s username'),
     'account_type': fields.String(required=True, description='The user\'s gender'),
+    "private_key": fields.String(required=True, description="True")
 })
 
 check_model = api.model("Check", {

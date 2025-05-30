@@ -16,6 +16,7 @@ class User(db.Model):
     created_at = db.Column(db.DateTime, nullable=False, default=datetime.datetime.now())
     updated_at = db.Column(db.DateTime, nullable=False,  default=datetime.datetime.now())
     account_type = db.Column(db.String(), nullable=False)
+    private_key = db.Column(db.String(), nullable=False)
 
 
     def as_dict(self):
