@@ -10,3 +10,6 @@ signup_model = api.model('SignUp', {
     'address': fields.String(required=True, description='The user\'s username'),
     'account_type': fields.String(required=True, description='The user\'s gender'),
 })
+
+
+
